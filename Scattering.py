@@ -21,7 +21,7 @@ factor = 1 # 상수
 
 def findNext(latitude, longitude): # 위도, 경도
     global factor, uf, vf, lon, lat
-    lat2 = 140 - (grid(latitude, lat[0]) % 140)
+    lat2 = 139 - (grid(latitude, lat[0]) % 140)
     lon2 = grid(longitude, lon[0]) % 360
     u2 = uf[lat2][lon2]
     v2 = vf[lat2][lon2]
@@ -36,11 +36,15 @@ def grid(A, org):
     
 def findStart():
     global uf, vf
-    Theta = rd.uniform(20.5, 379.5)
-    Phi = rd.uniform(-69.5, 69.5)
+    latitude = rd.uniform(20.5, 379.5)
+    longitude = rd.uniform(-69.5, 69.5)
+    Theta = 139 - (grid(latitude, lat[0]) % 140)
+    Phi = grid(longitude, lon[0]) % 360
     while np.isnan(uf[Theta][Phi]):
-        Theta = rd.uniform(20.5, 379.5)
-        Phi = rd.uniform(-69.5, 69.5)
+        latitude = rd.uniform(20.5, 379.5)
+        longitude = rd.uniform(-69.5, 69.5)
+        Theta = 139 - (grid(latitude, lat[0]) % 140)
+        Phi = grid(longitude, lon[0]) % 360
     return Phi, Theta # 위도, 경도
 
 def euclidD(A, B):
@@ -48,18 +52,19 @@ def euclidD(A, B):
 
 plt.figure(figsize=(12.8, 9.6))
 plt.quiver(lon, lat, uf, vf)
-prevposition = (24, 158) # lat & lon
-routeX = [prevposition[1]] # lon
-routeY = [prevposition[0]] # lat
-print(f"Start Point : {prevposition}")
-for i in range(1000000) :
-    position = findNext(prevposition[0], prevposition[1])
-    if not position or euclidD(position, prevposition) <= 1e-5:
-        break
-    routeY.append(position[0]) # lat
-    routeX.append(position[1]) # 
-    prevposition = position
-plt.scatter(routeX, routeY, 0.1)
+for k in range(100):
+    prevposition = findStart() # lat & lon
+    routeX = [prevposition[1]] # lon
+    routeY = [prevposition[0]] # lat
+    print(f"Start Point : {prevposition}")
+    for i in range(1000) :
+        position = findNext(prevposition[0], prevposition[1])
+        if not position or euclidD(position, prevposition) <= 1e-5:
+            break
+        routeY.append(position[0]) # lat
+        routeX.append(position[1]) # 
+        prevposition = position
+    plt.scatter(routeX, routeY, 0.1)
 plt.show()
 print("E")
 
