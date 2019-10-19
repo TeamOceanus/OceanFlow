@@ -45,7 +45,7 @@ def findStart():
         longitude = rd.uniform(-69.5, 69.5)
         Theta = 139 - (grid(latitude, lat[0]) % 140)
         Phi = grid(longitude, lon[0]) % 360
-    return Phi, Theta # 위도, 경도
+    return latitude, longitude # 위도, 경도
 
 def euclidD(A, B):
     return pow((A[0] - B[0])**2 + (A[1] - B[1])**2, 0.5)
