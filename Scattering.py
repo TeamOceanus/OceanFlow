@@ -36,13 +36,13 @@ def grid(A, org):
     
 def findStart():
     global uf, vf
-    latitude = rd.uniform(20.5, 379.5)
-    longitude = rd.uniform(-69.5, 69.5)
+    longitude = rd.uniform(20.5, 379.5)
+    latitude = rd.uniform(-69.5, 69.5)
     Theta = 139 - (grid(latitude, lat[0]) % 140)
     Phi = grid(longitude, lon[0]) % 360
     while np.isnan(uf[Theta][Phi]):
-        latitude = rd.uniform(20.5, 379.5)
-        longitude = rd.uniform(-69.5, 69.5)
+        longtitude = rd.uniform(20.5, 379.5)
+        latitude = rd.uniform(-69.5, 69.5)
         Theta = 139 - (grid(latitude, lat[0]) % 140)
         Phi = grid(longitude, lon[0]) % 360
     return latitude, longitude # 위도, 경도
